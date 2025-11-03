@@ -8,7 +8,7 @@ import (
 )
 
 func InitDb(dst ...interface{}) *gorm.DB {
-	db, err := gorm.Open(mysql.Open("root:530626kl@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"))
+	db, err := gorm.Open(mysql.Open("root:530626kl@tcp(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local"))
 	if err != nil {
 		panic(err)
 	}
@@ -19,11 +19,17 @@ func InitDb(dst ...interface{}) *gorm.DB {
 }
 
 func main()  {
-	//db :=InitDb()
+	db :=InitDb()
 	//task.Ex01(db)
 	fmt.Println("--------")
 	
 	//task.Ex02(db)
 
-	task.Ex03()
+	//task.Ex03()
+
+	// task4
+	task.Seed(db)
+	//task.Ex04(db)
+
+
 }
