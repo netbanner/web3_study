@@ -1,0 +1,13 @@
+{
+  "name": "hardhat-example",
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^3.0.6",
+    "@nomicfoundation/hardhat-ignition-viem": "^3.0.6",
+    "@nomicfoundation/hardhat-keystore": "^3.0.3",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.1",
+    "forge-std": "^1.1.2",
+    "hardhat": "^3.0.17"
+  }
+}
