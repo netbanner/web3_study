@@ -230,7 +230,10 @@ contract MetaNodeStack is IMetaNodeStack, Initializable, UUPSUpgradeable, Reentr
         uint256 claimable = user.pendingMetaNode;
         require(claimable > 0, "No MetaNode to claim");
         user.pendingMetaNode = 0;
+        
+        // 实际转账代币给用户
         metaNodeToken.safeTransfer(msg.sender, claimable);
+        
         emit ClaimMetaNode(msg.sender, _pid, claimable);
     }
 
