@@ -1,28 +1,3 @@
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
-// 导入Uniswap V2核心合约的ABI和字节码
-// 这些JSON文件包含了合约的接口定义和编译后的字节码
-const FactoryJSON = require("@uniswap/v2-core/build/UniswapV2Factory.json");
-const RouterJSON = require("@uniswap/v2-periphery/build/UniswapV2Router02.json");
-const WETH9JSON = require("@uniswap/v2-periphery/build/WETH9.json");
-jade_hao
-根据上面的测试用例，添加注释，并解释这样做的原理​
-TRAE AI
-思考过程
-用户要求我为测试用例添加注释并解释原理。我需要先查看当前的测试文件内容，然后为其添加详细的注释，解释每个部分的作用和原理。
-
-从之前的对话中，我已经了解到这个测试文件是测试MemeTokenBase合约的，使用了Uniswap V2的合约来模拟DEX环境。用户已经修复了导入错误，现在需要添加注释并解释原理。
-
-让我先查看当前的测试文件内容，然后添加注释并解释。
-
-我需要查看当前的测试文件内容，然后为其添加详细的注释并解释每个部分的原理。
-
-go_solidity/task3/Meme/test/MemeTokenBase-test.js
-我将为测试文件添加详细注释并解释其原理：
-
-
-javascript
-Apply
 // 引入测试框架和工具
 const { expect } = require("chai"); // 引入Chai断言库用于编写测试断言
 const { ethers } = require("hardhat"); // 引入Hardhat的ethers模块，用于与以太坊交互
