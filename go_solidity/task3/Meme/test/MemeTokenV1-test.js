@@ -99,7 +99,7 @@ describe("MemeTokenV1", function () {
         ethers.MaxUint256,
         { value: ethers.parseEther("1000") }
       );
-
+    
       // 2. 测试钱包从Uniswap对购买代币（而不是直接转账）
       await router.connect(testWallet).swapExactETHForTokensSupportingFeeOnTransferTokens(
         0, // 最小接收代币数量
@@ -108,7 +108,11 @@ describe("MemeTokenV1", function () {
         ethers.MaxUint256, // 截止时间
         { value: ethers.parseEther("100") } // 发送的ETH数量
       );
-
+    
+      // 获取测试钱包的实际代币余额
+      const testWalletBalance = await memeTokenV1.balanceOf(testWallet.address);
+      console.log("测试钱包实际余额:", ethers.formatEther(testWalletBalance));
+    
       // 3. 从测试钱包卖出代币到Uniswap对，触发税收
       const initialMarketingBalance = await memeTokenV1.balanceOf(
         marketingWallet.address
@@ -116,23 +120,23 @@ describe("MemeTokenV1", function () {
       const initialDevelopmentBalance = await memeTokenV1.balanceOf(
         developmentWallet.address
       );
-
-      // 设置路由允许
+    
+      // 设置路由允许 - 使用实际余额
       await memeTokenV1
         .connect(testWallet)
-        .approve(await router.getAddress(), ethers.parseEther("100"));
-
-      // 卖出交易
+        .approve(await router.getAddress(), testWalletBalance);
+    
+      // 卖出交易 - 使用实际余额
       await router
         .connect(testWallet)
         .swapExactTokensForETHSupportingFeeOnTransferTokens(
-          ethers.parseEther("100"),
+          testWalletBalance,
           0,
           [await memeTokenV1.getAddress(), await weth.getAddress()],
           testWallet.address,
           ethers.MaxUint256
         );
-
+    
       // 检查是否分配了税收
       const finalMarketingBalance = await memeTokenV1.balanceOf(
         marketingWallet.address
@@ -140,7 +144,7 @@ describe("MemeTokenV1", function () {
       const finalDevelopmentBalance = await memeTokenV1.balanceOf(
         developmentWallet.address
       );
-
+    
       // 验证税收已分配
       expect(finalMarketingBalance).to.be.gt(initialMarketingBalance);
       expect(finalDevelopmentBalance).to.be.gt(initialDevelopmentBalance);
@@ -161,22 +165,25 @@ describe("MemeTokenV1", function () {
         ethers.MaxUint256,
         { value: ethers.parseEther("1000") }
       );
-
-      const testWalletBalance = await memeTokenV1.balanceOf(testWallet.address);
+  
       // 2. 设置swapTokensAtAmount为较小的值，以便测试
       await memeTokenV1.setSwapTokensAtAmount(ethers.parseEther("100000"));
-
+  
       // 3. 给测试钱包转账一些代币用于卖出
       await memeTokenV1.transfer(
         testWallet.address,
         ethers.parseEther("100000")
       );
-
-      // 4. 从测试钱包卖出代币到Uniswap对，触发税收和自动swap
+  
+      // 4. 获取测试钱包的实际代币余额（在转账后获取！）
+      const testWalletBalance = await memeTokenV1.balanceOf(testWallet.address);
+      console.log("测试钱包实际余额:", ethers.formatEther(testWalletBalance));
+  
+      // 5. 从测试钱包卖出代币到Uniswap对，触发税收和自动swap
       await memeTokenV1
         .connect(testWallet)
         .approve(await router.getAddress(), testWalletBalance);
-
+  
       // 卖出交易 - 使用实际余额的90%
       await router
         .connect(testWallet)
